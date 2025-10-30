@@ -32,7 +32,7 @@ const Footer = () => {
   const socialLinks = [
     { icon: Linkedin, href: 'https://linkedin.com/company/kahfi', label: 'LinkedIn' },
     { icon: Mail, href: 'mailto:contactkahfi@kahfi.sn', label: 'Email' },
-    { icon: Phone, href: 'tel:+221772980105', label: 'Téléphone' }
+    { icon: Phone, href: 'tel:+221772980105', label: 'Téléphone' },
   ]
 
   const scrollToSection = (href) => {

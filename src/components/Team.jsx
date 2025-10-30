@@ -48,7 +48,7 @@ const Team = () => {
       name: "Issa Diol",
       role: "Développeur Full-Stack & Chef de Projet & lead developer",
       bio: "Spécialiste en développement web et systèmes distribués.",
-      image: "https://res.cloudinary.com/dhivn2ahm/image/upload/v1761791230/WhatsApp_Image_2025-10-30_at_02.26.39_ci4wvv.jpg",
+      image: "https://res.cloudinary.com/dhivn2ahm/image/upload/v1761836036/WhatsApp_Image_2025-10-30_at_14.52.03_vi9xxb.jpg",
       social: {
         linkedin: "https://linkedin.com/in/issa-diol",
         github: "https://github.com/issa-diol",
