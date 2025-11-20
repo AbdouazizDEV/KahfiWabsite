@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { Mail, Phone, MapPin, Send, CheckCircle, Linkedin } from 'lucide-react'
+import { Mail, Phone, MapPin, Send, CheckCircle, Linkedin, Loader2, AlertCircle } from 'lucide-react'
+import emailjs from '@emailjs/browser'
+import { EMAILJS_CONFIG, isEmailJSConfigured } from '../config/emailjs'
 
 const Contact = () => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const formRef = useRef(null)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -14,30 +17,112 @@ const Contact = () => {
     message: ''
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [emailJSReady, setEmailJSReady] = useState(false)
+
+  useEffect(() => {
+    // Initialiser EmailJS avec la clé publique
+    if (EMAILJS_CONFIG.PUBLIC_KEY && EMAILJS_CONFIG.PUBLIC_KEY !== 'your_public_key') {
+      emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY)
+      setEmailJSReady(true)
+    } else {
+      console.warn('EmailJS non configuré. Veuillez configurer vos clés dans src/config/emailjs.js ou via les variables d\'environnement.')
+    }
+  }, [])
 
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     })
+    // Effacer l'erreur quand l'utilisateur tape
+    if (error) setError(null)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Simulation d'envoi
-    setIsSubmitted(true)
-    setTimeout(() => {
-      setIsSubmitted(false)
-      setFormData({ name: '', email: '', company: '', message: '' })
-    }, 3000)
+    
+    // Vérifier si EmailJS est configuré
+    if (!emailJSReady || !isEmailJSConfigured()) {
+      setError('Le service d\'envoi d\'email n\'est pas configuré. Veuillez nous contacter directement par email ou téléphone.')
+      return
+    }
+
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      // Préparer les paramètres pour EmailJS
+      // IMPORTANT: Les noms de paramètres doivent correspondre exactement à ceux de votre template EmailJS
+      const templateParams = {
+        titre: `Nouveau message de ${formData.name} - KAHFI Website`,
+        nom: formData.name,
+        Temps: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+        message: formData.message + (formData.company ? `\n\nSociété: ${formData.company}` : ''),
+        Email: formData.email
+      }
+
+      // Envoyer l'email via EmailJS
+      const response = await emailjs.send(
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.TEMPLATE_ID,
+        templateParams
+      )
+
+      // Vérifier la réponse
+      if (response.status === 200) {
+        // Succès
+        setIsSubmitted(true)
+        setFormData({ name: '', email: '', company: '', message: '' })
+        
+        // Réinitialiser après 5 secondes
+        setTimeout(() => {
+          setIsSubmitted(false)
+        }, 5000)
+      } else {
+        throw new Error('Erreur lors de l\'envoi')
+      }
+
+    } catch (err) {
+      console.error('Erreur lors de l\'envoi de l\'email:', err)
+      
+      // Messages d'erreur plus précis avec solutions
+      let errorMessage = ''
+      
+      if (err.text) {
+        // Erreur spécifique de permissions Gmail
+        if (err.text.includes('insufficient authentication scopes') || err.text.includes('authentication scopes')) {
+          errorMessage = 'Permissions Gmail insuffisantes. Veuillez reconnecter votre service Gmail dans EmailJS avec les permissions "Send email on your behalf". Consultez le README pour plus d\'informations.'
+        } else if (err.text.includes('Invalid template') || err.text.includes('template')) {
+          errorMessage = 'Template EmailJS invalide. Vérifiez que le Template ID est correct dans votre configuration.'
+        } else if (err.text.includes('Invalid service') || err.text.includes('service')) {
+          errorMessage = 'Service EmailJS invalide. Vérifiez que le Service ID est correct dans votre configuration.'
+        } else {
+          errorMessage = `Erreur: ${err.text}`
+        }
+      } else if (err.message) {
+        if (err.message.includes('insufficient authentication scopes') || err.message.includes('authentication')) {
+          errorMessage = 'Permissions Gmail insuffisantes. Veuillez reconnecter votre service Gmail dans EmailJS.'
+        } else {
+          errorMessage = `Erreur: ${err.message}`
+        }
+      } else {
+        errorMessage = 'Une erreur est survenue lors de l\'envoi du message. Veuillez réessayer ou nous contacter directement via email ou téléphone.'
+      }
+      
+      setError(errorMessage)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const contactInfo = [
     {
       icon: Mail,
       title: "Email",
-      value: "contactkahfi@kahfi.sn",
-      link: "mailto:contactkahfi@kahfi.sn",
+      value: "kahficontact1010@gmail.com",
+      link: "mailto:kahficontact1010@gmail.com",
       color: "green"
     },
     {
@@ -57,7 +142,7 @@ const Contact = () => {
     {
       icon: Linkedin,
       title: "LinkedIn",
-      value: "KAHFI",
+      value: "KAHFI SN",
       link: "https://linkedin.com/company/kahfi",
       color: "indigo"
     }
@@ -195,7 +280,58 @@ const Contact = () => {
                 </p>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+                {/* Message d'erreur amélioré */}
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-red-50 border-2 border-red-300 rounded-lg p-6"
+                  >
+                    <div className="flex items-start space-x-3 mb-4">
+                      <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <h4 className="text-base font-bold text-red-900 mb-2">Erreur d'envoi</h4>
+                        <p className="text-sm text-red-800 mb-4">{error}</p>
+                      </div>
+                    </div>
+                    
+                    {error.includes('Permissions Gmail insuffisantes') && (
+                      <div className="bg-white rounded-lg p-4 border border-red-200">
+                        <h5 className="font-semibold text-red-900 mb-3 text-sm">📋 Solution étape par étape :</h5>
+                        <ol className="list-decimal list-inside space-y-2 text-sm text-red-800">
+                          <li>Allez sur <a href="https://dashboard.emailjs.com/admin/integration" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline font-medium">EmailJS Dashboard → Email Services</a></li>
+                          <li>Cliquez sur votre service Gmail existant</li>
+                          <li>Supprimez-le (ou désactivez-le temporairement)</li>
+                          <li>Cliquez sur <strong>"Add New Service"</strong> → Sélectionnez <strong>"Gmail"</strong></li>
+                          <li>Cliquez sur <strong>"Connect Account"</strong></li>
+                          <li><strong className="text-red-900">IMPORTANT :</strong> Acceptez <strong>TOUTES</strong> les permissions demandées par Google, notamment :<br />
+                            <span className="ml-4 block mt-1">✅ "Send email on your behalf"<br />
+                            ✅ "Manage your email"<br />
+                            ✅ Toutes les autres permissions</span>
+                          </li>
+                          <li>Sauvegardez et testez à nouveau le formulaire</li>
+                        </ol>
+                        <div className="mt-4 pt-4 border-t border-red-200">
+                          <p className="text-xs text-red-700">
+                            <strong>Note :</strong> Si le problème persiste, essayez avec un autre compte Gmail ou utilisez un autre service email dans EmailJS.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {(error.includes('Invalid template') || error.includes('Invalid service')) && (
+                      <div className="bg-white rounded-lg p-4 border border-red-200">
+                        <h5 className="font-semibold text-red-900 mb-2 text-sm">Vérifications nécessaires :</h5>
+                        <ul className="list-disc list-inside space-y-1 text-sm text-red-800">
+                          <li>Vérifiez que le <strong>Service ID</strong> et <strong>Template ID</strong> dans votre configuration correspondent exactement à ceux dans EmailJS</li>
+                          <li>Les IDs sont sensibles à la casse</li>
+                          <li>Consultez le fichier <code className="bg-red-100 px-1 rounded">src/config/emailjs.js</code> ou vos variables d'environnement</li>
+                        </ul>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                     Nom complet *
@@ -261,10 +397,22 @@ const Contact = () => {
 
                 <button
                   type="submit"
-                  className="w-full btn-primary flex items-center justify-center space-x-2"
+                  disabled={isLoading}
+                  className={`w-full btn-primary flex items-center justify-center space-x-2 ${
+                    isLoading ? 'opacity-75 cursor-not-allowed' : ''
+                  }`}
                 >
-                  <Send className="w-5 h-5" />
-                  <span>Envoyer le Message</span>
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <span>Envoi en cours...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      <span>Envoyer le Message</span>
+                    </>
+                  )}
                 </button>
               </form>
             )}
