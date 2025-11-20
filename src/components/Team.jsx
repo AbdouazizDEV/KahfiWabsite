@@ -26,7 +26,7 @@ const Team = () => {
       name: "Fatou Bintou Diallo",
       role: "Cyber Sécurité & DevOps & SysAdmin",
       bio: "Spécialiste en cybersécurité, développement et administration de systèmes.",
-      image: "https://res.cloudinary.com/dhivn2ahm/image/upload/v1761790698/WhatsApp_Image_2025-10-30_at_02.17.32_nyk18v.jpg",
+      image: "https://res.cloudinary.com/dhivn2ahm/image/upload/v1763639172/WhatsApp_Image_2025-11-17_at_13.56.11_haddjp.jpg",
       social: {
         linkedin: "https://linkedin.com/in/fatou-bintou-diallo",
         github: "https://github.com/fatou-bintou-diallo",
@@ -54,8 +54,17 @@ const Team = () => {
         github: "https://github.com/issa-diol",
         email: "issa@kahfi.sn"
       }
+    },
+    {
+      name: "Khardiata Thiam",
+      role: "Développeuse web & Référente digitale & Community Manager",
+      bio: "Spécialiste en développement web et référente digitale & community manager.",
+      image: "https://res.cloudinary.com/dhivn2ahm/image/upload/v1763639171/WhatsApp_Image_2025-11-17_at_13.56.39_vtbseq.jpg",
+      social: {
+        linkedin: "https://linkedin.com/in/khardiata-thiam-7b272b2b3",
+        email: "khardiata@kahfi.sn"
+      }
     }
-    
   ]
 
   // Auto-play carousel
