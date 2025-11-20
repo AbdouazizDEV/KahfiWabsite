@@ -63,7 +63,7 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0"
             >
-              KAHFI développe des solutions technologiques innovantes adaptées au contexte africain, 
+              KAHFI SN développe des solutions technologiques innovantes adaptées au contexte africain, 
               en formant les talents locaux et en créant des applications qui répondent aux vrais besoins du continent.
             </motion.p>
 

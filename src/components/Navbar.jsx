@@ -40,10 +40,10 @@ const Navbar = () => {
           <div className="flex items-center space-x-2">
             <img 
               src="https://res.cloudinary.com/dhivn2ahm/image/upload/v1755515596/WhatsApp_Image_2025-08-09_at_01.27.37_2_cl95mc.jpg" 
-              alt="KAHFI Logo" 
+              alt="KAHFI SN Logo" 
               className="h-10 w-auto rounded-[10px]"
             />
-            <span className="text-xl font-bold text-gray-900">KAHFI</span>
+            <span className="text-xl font-bold text-gray-900">SN</span>
           </div>
 
           {/* Desktop Navigation */}
