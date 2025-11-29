@@ -246,7 +246,7 @@ const Contact = () => {
             {/* Image */}
             <div className="relative">
               <img
-                src="https://res.cloudinary.com/dhivn2ahm/image/upload/v1755515596/WhatsApp_Image_2025-08-09_at_01.27.37_2_cl95mc.jpg"
+                src="https://res.cloudinary.com/dhivn2ahm/image/upload/v1764380462/WhatsApp_Image_2025-11-25_at_07.36.48_a1ujvp.jpg"
                 alt="Équipe KAHFI"
                 className="rounded-xl shadow-lg w-full h-auto"
               />

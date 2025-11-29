@@ -39,11 +39,11 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <img 
-              src="https://res.cloudinary.com/dhivn2ahm/image/upload/v1755515596/WhatsApp_Image_2025-08-09_at_01.27.37_2_cl95mc.jpg" 
+              src="https://res.cloudinary.com/dhivn2ahm/image/upload/v1764380462/WhatsApp_Image_2025-11-25_at_07.36.48_a1ujvp.jpg" 
               alt="KAHFI SN Logo" 
               className="h-10 w-auto rounded-[10px]"
             />
-            <span className="text-xl font-bold text-gray-900">SN</span>
+            
           </div>
 
           {/* Desktop Navigation */}

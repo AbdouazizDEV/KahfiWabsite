@@ -54,11 +54,11 @@ const Footer = () => {
             <div className="lg:col-span-1">
               <div className="flex items-center space-x-2 mb-6">
                 <img 
-                  src="https://res.cloudinary.com/dhivn2ahm/image/upload/v1755515596/WhatsApp_Image_2025-08-09_at_01.27.37_2_cl95mc.jpg" 
+                  src="https://res.cloudinary.com/dhivn2ahm/image/upload/v1764380462/WhatsApp_Image_2025-11-25_at_07.36.48_a1ujvp.jpg" 
                   alt="KAHFI SN Logo" 
                   className="h-10 w-auto rounded-[10px]"
                 />
-                <span className="text-xl font-bold">SN</span>
+                
               </div>
               <p className="text-gray-300 mb-6 leading-relaxed">
                 Startup tech sénégalaise qui révolutionne l'approche technologique en Afrique 
