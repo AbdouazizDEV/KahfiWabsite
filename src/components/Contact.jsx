@@ -243,14 +243,20 @@ const Contact = () => {
               })}
             </div>
 
-            {/* Image */}
+            {/* Vidéo (style GIF) */}
             <div className="relative">
-              <img
-                src="https://res.cloudinary.com/dhivn2ahm/image/upload/v1764380462/WhatsApp_Image_2025-11-25_at_07.36.48_a1ujvp.jpg"
-                alt="Équipe KAHFI"
+              <video
+                src="https://res.cloudinary.com/dhivn2ahm/video/upload/v1764399998/WhatsApp_Video_2025-11-29_at_07.05.56_eiltog.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
                 className="rounded-xl shadow-lg w-full h-auto"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-green-600/20 to-transparent rounded-xl"></div>
+                style={{ objectFit: 'cover' }}
+              >
+                Votre navigateur ne supporte pas la lecture de vidéos.
+              </video>
+              <div className="absolute inset-0 bg-gradient-to-t from-green-600/20 to-transparent rounded-xl pointer-events-none"></div>
             </div>
           </motion.div>
 
