@@ -1,0 +1,15 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  # Whitelist des clés EmailJS pour le scanner de secrets
+  # Ces clés sont publiques et conçues pour être exposées côté client
+  SECRETS_SCAN_OMIT_KEYS = "VITE_EMAILJS_PUBLIC_KEY,VITE_EMAILJS_SERVICE_ID,VITE_EMAILJS_TEMPLATE_ID"
+
+# Configuration pour les redirections (optionnel)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+

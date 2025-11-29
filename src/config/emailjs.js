@@ -17,14 +17,16 @@ export const EMAILJS_CONFIG = {
   TEMPLATE_ID: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_hhotznf',
   
   // Public Key (API Key publique depuis EmailJS > Account > API Keys)
-  PUBLIC_KEY: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'your_public_key'
+  PUBLIC_KEY: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '',
 }
 
 // Vérifier si EmailJS est configuré
 export const isEmailJSConfigured = () => {
   return (
-    EMAILJS_CONFIG.SERVICE_ID !== 'service_s6tda58' ||
-    (EMAILJS_CONFIG.TEMPLATE_ID !== 'template_xxxxx' && EMAILJS_CONFIG.PUBLIC_KEY !== 'your_public_key')
+    EMAILJS_CONFIG.SERVICE_ID &&
+    EMAILJS_CONFIG.TEMPLATE_ID &&
+    EMAILJS_CONFIG.PUBLIC_KEY &&
+    EMAILJS_CONFIG.PUBLIC_KEY !== ''
   )
 }
 
